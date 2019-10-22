@@ -1,0 +1,190 @@
+<template>
+  <div class="wrap">
+    <div class="search-wrap">
+      <el-input
+        v-model="searchText"
+        placeholder="搜索教练名称"
+        prefix-icon="el-icon-search"
+        v-if="!filter"
+        class="input-search"
+      ></el-input>
+      <div class="filter" v-if="filter">
+        <el-form>
+          <el-form-item label="教练名称">
+            <el-input v-model="name"></el-input>
+          </el-form-item>
+          <el-form-item label="联系方式">
+            <el-input v-model="mobile"></el-input>
+          </el-form-item>
+          <el-form-item label="注册日期">
+            <el-date-picker
+              v-model="dateCreate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            ></el-date-picker>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary">搜索</el-button>
+        <el-button @click="clearForm">清空</el-button>
+      </div>
+      <span @click="filter = !filter" class="select-btn">筛选</span>
+    </div>
+    <el-button type="text" @click="add" style="float: right"
+      >添加教练</el-button
+    >
+    <el-table :data="tableData">
+      <el-table-column label="序号" type="index"></el-table-column>
+      <el-table-column label="教练" prop="name"></el-table-column>
+      <el-table-column label="联系方式" prop="mobile"></el-table-column>
+      <el-table-column label="注册日期" prop="time_h"></el-table-column>
+      <el-table-column label="操作" width="300px">
+        <template slot-scope="scope">
+          <el-button @click="update(scope.row)" size="mini" type="warning"
+            >修改</el-button
+          >
+          <el-button @click="del(scope.row)" size="mini" type="danger"
+            >删除</el-button
+          >
+          <!-- <el-button @click="del(scope.row)" size="mini" type="primary"
+            >资质录入</el-button
+          > -->
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog :title="msgTitle" :visible.sync="msgVisible" width="500px">
+      <el-form :model="msgForm" label-width="80px">
+        <el-form-item label="教练姓名">
+          <el-input v-model="msgForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话">
+          <el-input v-model="msgForm.mobile"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="submit">确定</el-button>
+        <el-button @click="close">取消</el-button>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      filter: false,
+      searchText: "",
+      tableData: [],
+      name: "",
+      mobile: "",
+      dateCreate: "",
+      msgTitle: "",
+      msgVisible: false,
+      msgForm: {
+        name: "",
+        mobile: "",
+        coach_id: ""
+      },
+      type: "add"
+    };
+  },
+  methods: {
+    update(row) {
+      this.type = "edit";
+      this.msgTitle = "教练修改";
+      this.msgForm.name = row.name;
+      this.msgForm.mobile = row.mobile;
+      this.msgForm.coach_id = row.coach_id;
+      this.msgVisible = true;
+    },
+    add() {
+      this.type = "add";
+      this.msgTitle = "教练添加";
+      this.msgForm.name = "";
+      this.msgForm.mobile = "";
+      this.msgVisible = true;
+    },
+    submit() {
+      const url =
+        this.type === "add"
+          ? "/admin/coach/coachAdd"
+          : "/admin/coach/coachUpdate";
+      let params = {};
+      if (this.type === "add") {
+        params = {
+          name: this.msgForm.name,
+          mobile: this.msgForm.mobile
+        };
+      } else {
+        params = {
+          coach_id: this.msgForm.coach_id,
+          mobile: this.msgForm.mobile
+        };
+      }
+      this.$http.get(url, { params }).then(res => {
+        this.$message(res.msg);
+        this.getCoach();
+        this.msgVisible = false;
+      });
+    },
+    close() {
+      this.msgForm.name = "";
+      this.msgForm.coach_id = "";
+      this.msgForm.mobile = "";
+      this.msgVisible = false;
+    },
+    del(row) {
+      this.$confirm("确认删除此教练吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http
+            .get(`/admin/coach/coachDel?coach_id=${row.coach_id}`)
+            .then(res => {
+              this.$message(res.msg);
+              this.getCoach();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    // 获取教练列表
+    getCoach() {
+      this.$http.get("/admin/coach/coachlist").then(res => {
+        this.tableData = res.data.data;
+      });
+    }
+  },
+  created() {
+    this.getCoach();
+  }
+};
+</script>
+<style lang="scss" scoped>
+.search-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  .input-search {
+    width: 300px;
+  }
+  .select-btn {
+    cursor: pointer;
+  }
+  .filter {
+    text-align: left;
+    .el-form {
+      display: flex;
+      .el-form-item {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+</style>
