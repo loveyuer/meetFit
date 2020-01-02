@@ -7,6 +7,7 @@
         prefix-icon="el-icon-search"
         v-if="!filter"
         class="input-search"
+        @keyup.enter.native="getData"
       ></el-input>
       <div class="filter" v-if="filter">
         <el-form>
@@ -47,8 +48,8 @@
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
     </div>
-    <el-table :data="tableData">
-      <el-table-column label="序号" type="index"></el-table-column>
+    <el-table :data="tableData" border>
+      <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="会员名称" prop="name"></el-table-column>
       <el-table-column label="联系方式" prop="mobile"></el-table-column>
       <el-table-column label="注册日期" prop="time_h"></el-table-column>
@@ -95,7 +96,12 @@
         <el-button type="primary" @click="confirmCoach">确定</el-button>
       </el-form>
     </el-dialog>
-    <el-dialog :title="msgTitle" :visible.sync="msgVisible" width="500px">
+    <el-dialog
+      :title="msgTitle"
+      :visible.sync="msgVisible"
+      width="500px"
+      class="update-dialog"
+    >
       <el-form class="msgForm" :model="msgForm" label-width="80px">
         <el-form-item label="会员名称">
           <el-input v-model="msgForm.name"></el-input>
@@ -104,7 +110,7 @@
           <el-input v-model="msgForm.mobile"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="msgForm.sex">
+          <el-select v-model="msgForm.sex" style="width: 100%">
             <el-option label="保密" :value="0"></el-option>
             <el-option label="男" :value="1"></el-option>
             <el-option label="女" :value="2"></el-option>
@@ -116,6 +122,7 @@
             type="date"
             placeholder="请选择日期"
             value-format="yyyy-MM-DD"
+            style="width: 100%"
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="地址">
@@ -196,9 +203,13 @@ export default {
       });
     },
     getData() {
-      this.$http.get("/admin/Customer/customerList").then(res => {
-        this.tableData = res.data.data;
-      });
+      this.$http
+        .get("/admin/Customer/customerList", {
+          params: { name: this.searchText }
+        })
+        .then(res => {
+          this.tableData = res.data.data;
+        });
     },
     // 获取教练列表
     getCoach() {
@@ -245,11 +256,17 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center;
+}
 .search-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  border: 1px solid #ebeef5;
+  padding: 10px;
   .input-search {
     width: 300px;
   }
@@ -269,7 +286,12 @@ export default {
 .el-table .cell {
   text-align: center;
 }
-.el-dialog {
+.update-dialog {
+  .el-dialog {
+    display: flex;
+  }
+}
+.el-dialog__header {
   display: flex;
 }
 </style>

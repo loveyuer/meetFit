@@ -5,8 +5,15 @@
       <div class="right-top">
         <div class="title"><img src alt />遇健私教平台管理后台</div>
         <div class="option">
-          <span> <i></i>联系客服 </span>
-          <span> <i></i>超级管理员 </span>
+          <span style="margin-right: 10px;">
+            <i class="el-icon-service"></i>联系客服
+          </span>
+          <el-popover>
+            <span @click="logOut" class="cursor logout">退出</span>
+            <span slot="reference" class="cursor">
+              {{ user }}<i class="el-icon-caret-bottom"></i>
+            </span>
+          </el-popover>
         </div>
       </div>
       <div class="right-bd">
@@ -22,6 +29,19 @@ export default {
   name: "home",
   components: {
     NavMenu
+  },
+  computed: {
+    user() {
+      return sessionStorage.getItem("user");
+    }
+  },
+  methods: {
+    // 退出登录
+    logOut() {
+      this.$http.get("/admin/index/logout").then(() => {
+        this.$router.push("/");
+      });
+    }
   }
 };
 </script>
@@ -41,5 +61,13 @@ export default {
     background-color: #f8f9fb;
     padding: 20px 40px;
   }
+}
+.cursor {
+  cursor: pointer;
+}
+.logout {
+  width: 100%;
+  display: block;
+  text-align: center;
 }
 </style>

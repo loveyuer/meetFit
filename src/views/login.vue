@@ -15,6 +15,7 @@
             type="password"
             v-model="pwd"
             placeholder="请输入密码"
+            @keyup.enter.native="login"
           ></el-input>
           <el-button @click="login" type="primary">登录</el-button>
         </el-form-item>
@@ -39,6 +40,7 @@ export default {
         })
         .then(() => {
           this.$router.push({ path: "/home/memberManagement" });
+          sessionStorage.setItem("user", this.mobile);
         });
     }
   }

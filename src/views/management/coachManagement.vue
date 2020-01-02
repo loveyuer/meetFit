@@ -34,12 +34,12 @@
     <el-button type="text" @click="add" style="float: right"
       >添加教练</el-button
     >
-    <el-table :data="tableData">
-      <el-table-column label="序号" type="index"></el-table-column>
+    <el-table :data="tableData" border>
+      <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="教练" prop="name"></el-table-column>
       <el-table-column label="联系方式" prop="mobile"></el-table-column>
       <el-table-column label="注册日期" prop="time_h"></el-table-column>
-      <el-table-column label="操作" width="300px">
+      <el-table-column label="操作" width="150px">
         <template slot-scope="scope">
           <el-button @click="update(scope.row)" size="mini" type="warning"
             >修改</el-button
@@ -47,7 +47,7 @@
           <el-button @click="del(scope.row)" size="mini" type="danger"
             >删除</el-button
           >
-          <!-- <el-button @click="del(scope.row)" size="mini" type="primary"
+          <!-- <el-button @click="addDetail" size="mini" type="primary"
             >资质录入</el-button
           > -->
         </template>
@@ -158,6 +158,10 @@ export default {
       this.$http.get("/admin/coach/coachlist").then(res => {
         this.tableData = res.data.data;
       });
+    },
+    // 资质录入跳转
+    addDetail() {
+      this.$router.push("coachManagement/detail");
     }
   },
   created() {
@@ -166,11 +170,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center;
+}
 .search-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  border: 1px solid #ebeef5;
+  padding: 10px;
   .input-search {
     width: 300px;
   }

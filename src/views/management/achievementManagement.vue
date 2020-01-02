@@ -28,8 +28,8 @@
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
     </div>
-    <el-table :data="tableData">
-      <el-table-column label="序号" type="index"></el-table-column>
+    <el-table :data="tableData" border>
+      <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="教练名称" prop="name"></el-table-column>
       <el-table-column
         label="课时统计（节）"
@@ -57,7 +57,7 @@
     >
       <el-form label-width="80px">
         <el-form-item label="会员选择">
-          <el-select v-model="chooseMember">
+          <el-select v-model="chooseMember" style="width: 100%">
             <el-option
               v-for="item in memberList"
               :key="item.customer_id"
@@ -67,7 +67,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="课程选择">
-          <el-select v-model="chooseCourse">
+          <el-select v-model="chooseCourse" style="width: 100%">
             <el-option
               v-for="item in courseList"
               :key="item.id"
@@ -82,7 +82,7 @@
         <el-form-item label="购买数量">
           <el-input v-model="courseCount"></el-input>
         </el-form-item>
-        <el-form-item label="业绩总计">
+        <el-form-item label="业绩总计" style="text-align: left;">
           <span>{{ totalAchieve }}</span>
         </el-form-item>
         <el-button type="primary" @click="confirmAdd">确定</el-button>
@@ -189,10 +189,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center;
+}
 .search-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
+  border: 1px solid #ebeef5;
+  padding: 10px;
   .input-search {
     width: 300px;
   }

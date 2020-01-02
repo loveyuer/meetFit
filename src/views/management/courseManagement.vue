@@ -31,8 +31,8 @@
     <el-button type="text" @click="add" style="float: right"
       >添加课程</el-button
     >
-    <el-table :data="tableData">
-      <el-table-column label="序号" type="index"></el-table-column>
+    <el-table :data="tableData" border>
+      <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="课程名称" prop="name"></el-table-column>
       <el-table-column label="会员人数（人）" prop="number"></el-table-column>
       <el-table-column label="课程时间（分钟）" prop="period"></el-table-column>
@@ -88,16 +88,17 @@
         <el-form-item label="允许使用时间">
           <el-time-picker
             is-range
-            v-model="msgForm.time"
+            v-model="defaultTime"
             range-separator="至"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
             placeholder="选择时间范围"
-            value-format="HH-mm-ss"
+            value-format="HH:mm:ss"
+            @change="changeTime"
           >
           </el-time-picker>
         </el-form-item>
-        <el-form-item label="自动签课">
+        <el-form-item label="自动签课" style="text-align: left;">
           <el-switch
             v-model="msgForm.auto_finish"
             active-color="#13ce66"
@@ -112,10 +113,20 @@
         <el-button @click="msgVisible = false">取消</el-button>
       </el-form>
     </el-dialog>
+    <coach-dialog
+      :dialogVisible="courseVisible"
+      :coachData="coachData"
+      :courseId="courseId"
+      @closeDialog="closeCoachList"
+      @dispatch="dispatch"
+    ></coach-dialog>
   </div>
 </template>
 <script>
+import CoachDialog from "./course/dialog/list.vue";
+
 export default {
+  components: { CoachDialog },
   data() {
     return {
       filter: false,
@@ -126,7 +137,11 @@ export default {
       msgVisible: false,
       msgTitle: "",
       msgForm: {},
-      type: "add"
+      type: "add",
+      courseVisible: false,
+      coachData: [],
+      courseId: 0,
+      defaultTime: []
     };
   },
   methods: {
@@ -138,7 +153,11 @@ export default {
       this.type = "edit";
       this.msgVisible = true;
       this.msgForm = row;
-      this.msgForm.time = [row.use_time_start, row.use_time_end];
+      this.msgForm.auto_finish = Boolean(this.msgForm.auto_finish);
+      this.defaultTime = [
+        `${row.use_time_start}:00:00`,
+        `${row.use_time_end}:00:00`
+      ];
     },
     del(row) {
       this.$confirm("确认删除该课程吗?", "提示", {
@@ -161,13 +180,18 @@ export default {
           });
         });
     },
+    // 修改时间
+    changeTime(v) {
+      this.msgForm.use_time_start = Number(v[0].split(":")[0]);
+      this.msgForm.use_time_end = Number(v[1].split(":")[0]);
+    },
     submit() {
       const url =
         this.type === "add"
           ? "/admin/course/courseAdd"
           : "/admin/course/courseUpdate";
-      this.msgForm.use_time_start = this.msgForm.time[0];
-      this.msgForm.use_time_end = this.msgForm.time[1];
+      this.msgForm.course_id = this.msgForm.id;
+      this.msgForm.auto_finish = Number(this.msgForm.auto_finish);
       this.$http.get(url, { params: this.msgForm }).then(res => {
         if (res.code === "1") {
           this.$message(res.msg);
@@ -197,9 +221,17 @@ export default {
     },
     // 分配教练
     sendCoach(row) {
-      this.chooseCoach = "";
-      this.statusVisible = true;
-      this.chooseUser = row.customer_id;
+      this.courseVisible = true;
+      this.courseId = row.id;
+      this.$http
+        .get(`admin/course/courseCoachList?course_id=${row.id}`)
+        .then(res => {
+          this.coachData = res.data.data;
+        });
+    },
+    // 重新获取列表
+    dispatch(v) {
+      this.sendCoach({ id: v });
     },
     // 选择教练
     confirmCoach() {
@@ -217,6 +249,10 @@ export default {
         .catch(e => {
           this.$message(e.msg);
         });
+    },
+    // 关闭分配弹框
+    closeCoachList() {
+      this.courseVisible = false;
     }
   },
   created() {
@@ -226,10 +262,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center;
+}
 .search-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid #ebeef5;
+  padding: 10px;
   .input-search {
     width: 300px;
   }
