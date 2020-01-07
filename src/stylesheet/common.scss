@@ -1,0 +1,35 @@
+.el-table td,
+.el-table th.is-leaf {
+  text-align: center;
+}
+.search-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border: 1px solid #ebeef5;
+  padding: 10px;
+  .input-search {
+    width: 300px;
+  }
+  .select-btn {
+    cursor: pointer;
+  }
+  .filter {
+    text-align: left;
+    .el-form {
+      display: flex;
+      .el-form-item {
+        margin-right: 20px;
+      }
+    }
+  }
+  .filterBtn{
+    position: absolute;
+    bottom: 105px;
+    right: 70px;
+  }
+}
+.el-table .cell {
+  text-align: center;
+}

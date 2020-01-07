@@ -17,33 +17,60 @@ export default new Router({
           component: () => import("./views/management/index.vue")
         },
         {
-          path: "memberPushManagement",
-          component: () => import("./views/management/memberPushManagement.vue")
+          path: "memberPushManagement", // 会员推送管理
+          component: () =>
+            import("./views/management/push/memberPushManagement.vue")
         },
         {
-          path: "memberManagement",
-          component: () => import("./views/management/memberManagement.vue")
+          path: "memberPushManagement/push", // 会员推送录入或修改
+          component: () => import("./views/management/push/update.vue")
         },
         {
-          path: "coachManagement",
-          component: () => import("./views/management/coachManagement.vue")
+          path: "memberManagement", // 会员管理
+          component: () =>
+            import("./views/management/member/memberManagement.vue")
         },
         {
-          path: "coachManagement/detail",
+          path: "memberManagement/update/:id", // 会员信息修改
+          component: () => import("./views/management/member/updateMessage.vue")
+        },
+        {
+          path: "coachManagement", // 教练管理
+          component: () =>
+            import("./views/management/coach/coachManagement.vue")
+        },
+        {
+          path: "coachManagement/detail", // 教练资质录入
           component: () => import("./views/management/coach/detail.vue")
         },
         {
-          path: "courseManagement",
-          component: () => import("./views/management/courseManagement.vue")
+          path: "courseManagement", // 课程管理
+          component: () =>
+            import("./views/management/course/courseManagement.vue")
+        },
+        {
+          path: "eliminationClassManagement", // 消课管理
+          component: () =>
+            import(
+              "./views/management/eliminating/eliminationClassManagement.vue"
+            )
+        },
+        {
+          path: "eliminationClassManagement/detail/:id", // 消课管理详情
+          component: () => import("./views/management/eliminating/detail.vue")
         },
         {
           path: "orderManagement",
           component: () => import("./views/management/orderManagement.vue")
         },
         {
-          path: "achievementManagement",
+          path: "achievementManagement", // 业绩管理
           component: () =>
-            import("./views/management/achievementManagement.vue")
+            import("./views/management/achievement/achievementManagement.vue")
+        },
+        {
+          path: "achievementManagement/detail/:id", // 业绩管理详情
+          component: () => import("./views/management/achievement/detail.vue")
         },
         {
           path: "payTemplateManagement",

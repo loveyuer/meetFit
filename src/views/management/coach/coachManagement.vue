@@ -169,32 +169,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.el-table td,
-.el-table th.is-leaf {
-  text-align: center;
-}
-.search-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  border: 1px solid #ebeef5;
-  padding: 10px;
-  .input-search {
-    width: 300px;
-  }
-  .select-btn {
-    cursor: pointer;
-  }
-  .filter {
-    text-align: left;
-    .el-form {
-      display: flex;
-      .el-form-item {
-        margin-right: 20px;
-      }
-    }
-  }
-}
-</style>

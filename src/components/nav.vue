@@ -17,16 +17,16 @@ export default {
   data() {
     return {
       nav: [
-        // {
-        //   id: "1",
-        //   name: "首页",
-        //   router: "index"
-        // },
-        // {
-        //   id: "2",
-        //   name: "会员推送管理",
-        //   router: "memberPushManagement"
-        // },
+        {
+          id: "1",
+          name: "首页",
+          router: "index"
+        },
+        {
+          id: "2",
+          name: "会员推送管理",
+          router: "memberPushManagement"
+        },
         {
           id: "3",
           name: "会员管理",
@@ -42,11 +42,11 @@ export default {
           name: "课程管理",
           router: "courseManagement"
         },
-        // {
-        //   id: "6",
-        //   name: "预约管理",
-        //   router: "orderManagement"
-        // },
+        {
+          id: "6",
+          name: "消课统计",
+          router: "eliminationClassManagement"
+        },
         {
           id: "7",
           name: "业绩管理",

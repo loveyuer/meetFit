@@ -6,8 +6,8 @@ import element from "element-ui";
 import axios from "axios";
 import "element-ui/lib/theme-chalk/index.css";
 import "./stylesheet/reset.scss";
+import "./stylesheet/common.scss";
 import echarts from "echarts";
-
 
 Vue.config.productionTip = false;
 Vue.prototype.$echarts = echarts;
