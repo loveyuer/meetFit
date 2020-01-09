@@ -7,6 +7,7 @@
         prefix-icon="el-icon-search"
         v-if="!filter"
         class="input-search"
+        @keyup.enter.native="getData"
       ></el-input>
       <div class="filter" v-if="filter">
         <el-form>
@@ -23,7 +24,7 @@
             ></el-date-picker>
           </el-form-item>
         </el-form>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
@@ -50,6 +51,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40, 50]"
+      :page-size="page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
     <el-dialog
       title="业绩录入"
       :visible.sync="achievementVisible"
@@ -107,7 +119,11 @@ export default {
       courseCount: 0,
       chooseGym: "",
       chooseCoach: "",
-      achievementVisible: false
+      achievementVisible: false,
+      // 分页
+      page: 1,
+      page_size: 10,
+      total: 0
     };
   },
   computed: {
@@ -125,10 +141,23 @@ export default {
     publish(row) {
       alert(row);
     },
+    // 获取教练列表
     getData() {
-      this.$http.get("/admin/achievement/coachList").then(res => {
-        this.tableData = res.data.data;
-      });
+      const params = {
+        name: this.searchText || this.name || null,
+        time_start: this.dateCreate && this.dateCreate[0],
+        time_end: this.dateCreate && this.dateCreate[1],
+        page: this.page,
+        page_size: this.page_size
+      };
+      this.$http
+        .get("/admin/achievement/coachList", {
+          params: params
+        })
+        .then(res => {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        });
     },
     // 获取会员列表
     getMember() {
@@ -136,7 +165,17 @@ export default {
         this.memberList = res.data.data;
       });
     },
-    // 获取课程列表
+    // 翻页
+    handleCurrentChange(v) {
+      this.page = v;
+      this.getData();
+    },
+    // 设置每页条数
+    handleSizeChange(v) {
+      this.page_size = v;
+      this.getData();
+    },
+    // 获取教练列表
     getCourse() {
       this.$http.get("/admin/Course/courseList").then(res => {
         this.courseList = res.data.data;

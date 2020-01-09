@@ -7,6 +7,7 @@
         prefix-icon="el-icon-search"
         v-if="!filter"
         class="input-search"
+        @keyup.enter.native="getCoach"
       ></el-input>
       <div class="filter" v-if="filter">
         <el-form>
@@ -23,10 +24,11 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
         </el-form>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="getCoach">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
@@ -53,6 +55,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40, 50]"
+      :page-size="page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
     <el-dialog :title="msgTitle" :visible.sync="msgVisible" width="500px">
       <el-form :model="msgForm" label-width="80px">
         <el-form-item label="教练姓名">
@@ -72,8 +85,10 @@ export default {
   data() {
     return {
       filter: false,
+      // 检索词
       searchText: "",
       tableData: [],
+      // 教练名称
       name: "",
       mobile: "",
       dateCreate: "",
@@ -84,7 +99,11 @@ export default {
         mobile: "",
         coach_id: ""
       },
-      type: "add"
+      type: "add",
+      // 分页
+      page: 1,
+      page_size: 10,
+      total: 0
     };
   },
   methods: {
@@ -153,11 +172,36 @@ export default {
           });
         });
     },
+    // 翻页
+    handleCurrentChange(v) {
+      this.page = v;
+      this.getData();
+    },
+    // 设置每页条数
+    handleSizeChange(v) {
+      this.page_size = v;
+      this.getData();
+    },
     // 获取教练列表
     getCoach() {
-      this.$http.get("/admin/coach/coachlist").then(res => {
+      const params = {
+        name: this.searchText || this.name || null,
+        mobile: this.mobile,
+        time_start: this.dateCreate && this.dateCreate[0],
+        time_end: this.dateCreate && this.dateCreate[1],
+        page: this.page,
+        page_size: this.page_size
+      };
+      this.$http.get("/admin/coach/coachlist", { params: params }).then(res => {
         this.tableData = res.data.data;
+        this.total = res.data.total;
       });
+    },
+    // 清空表格
+    clearForm() {
+      this.name = "";
+      this.mobile = "";
+      this.dateCreate = null;
     },
     // 资质录入跳转
     addDetail() {

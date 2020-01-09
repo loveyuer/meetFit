@@ -7,6 +7,7 @@
         prefix-icon="el-icon-search"
         v-if="!filter"
         class="input-search"
+        @keyup.enter.native="getData"
       ></el-input>
       <div class="filter" v-if="filter">
         <el-form>
@@ -20,10 +21,11 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
         </el-form>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
@@ -56,6 +58,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40, 50]"
+      :page-size="page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
     <el-dialog :title="msgTitle" :visible.sync="msgVisible" width="500px">
       <el-form class="msgForm" :model="msgForm" label-width="100px">
         <el-form-item label="课程名称">
@@ -130,8 +143,10 @@ export default {
   data() {
     return {
       filter: false,
+      // 检索词
       searchText: "",
       tableData: [],
+      // 课程名称
       name: "",
       dateCreate: "",
       msgVisible: false,
@@ -141,7 +156,11 @@ export default {
       courseVisible: false,
       coachData: [],
       courseId: 0,
-      defaultTime: []
+      defaultTime: [],
+      // 分页
+      page: 1,
+      page_size: 10,
+      total: 0
     };
   },
   methods: {
@@ -200,10 +219,30 @@ export default {
         }
       });
     },
+    // 翻页
+    handleCurrentChange(v) {
+      this.page = v;
+      this.getData();
+    },
+    // 设置每页条数
+    handleSizeChange(v) {
+      this.page_size = v;
+      this.getData();
+    },
     getData() {
-      this.$http.get("/admin/Course/courseList").then(res => {
-        this.tableData = res.data.data;
-      });
+      const params = {
+        name: this.searchText || this.name || null,
+        time_start: this.dateCreate && this.dateCreate[0],
+        time_end: this.dateCreate && this.dateCreate[1],
+        page: this.page,
+        page_size: this.page_size
+      };
+      this.$http
+        .get("/admin/Course/courseList", { params: params })
+        .then(res => {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        });
     },
     // 获取教练列表
     getCoach() {

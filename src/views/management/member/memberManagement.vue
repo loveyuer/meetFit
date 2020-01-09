@@ -19,8 +19,9 @@
           </el-form-item>
           <el-form-item label="分配状态">
             <el-select v-model="status">
-              <el-option value="未分配">未分配</el-option>
-              <el-option value="已分配">已分配</el-option>
+              <el-option :value="null" label="所有"></el-option>
+              <el-option :value="1" label="未分配"></el-option>
+              <el-option :value="2" label="已分配"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="负责教练">
@@ -40,16 +41,22 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
         </el-form>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
       <span @click="filter = !filter" class="select-btn">筛选</span>
     </div>
     <el-table :data="tableData" border>
-      <el-table-column label="序号" type="index" width="50px"></el-table-column>
+      <el-table-column
+        label="序号"
+        type="index"
+        width="50px"
+        :index="table_index"
+      ></el-table-column>
       <el-table-column label="会员名称" prop="name"></el-table-column>
       <el-table-column label="联系方式" prop="mobile"></el-table-column>
       <el-table-column label="注册日期" prop="time_h"></el-table-column>
@@ -81,6 +88,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 40, 50]"
+      :page-size="page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
     <el-dialog title="分配教练" :visible.sync="statusVisible" width="360px">
       <el-form>
         <el-form-item label="请选择教练">
@@ -111,17 +129,26 @@ export default {
   data() {
     return {
       filter: false,
+      // 搜索关键词
       searchText: "",
       tableData: [],
+      // 姓名
       name: "",
+      // 联系方式
       mobile: "",
+      // 选择教练
       coach: "",
       coachList: [],
+      // 分配状态 1：未分配 2：已分配
       status: "",
       dateCreate: "",
       chooseCoach: "",
       chooseUser: "",
-      statusVisible: false
+      statusVisible: false,
+      // 分页
+      page: 1,
+      page_size: 10,
+      total: 0
     };
   },
   methods: {
@@ -152,14 +179,40 @@ export default {
     publish(row) {
       alert(row);
     },
+    // 翻页
+    handleCurrentChange(v) {
+      this.page = v;
+      this.getData();
+    },
+    // 设置每页条数
+    handleSizeChange(v) {
+      this.page_size = v;
+      this.getData();
+    },
+    // 获取数据
     getData() {
+      const params = {
+        name: this.searchText || this.name || null,
+        mobile: this.mobile,
+        flag: this.status,
+        coach_id: this.coach,
+        time_start: this.dateCreate && this.dateCreate[0],
+        time_end: this.dateCreate && this.dateCreate[1],
+        page: this.page,
+        page_size: this.page_size
+      };
       this.$http
         .get("/admin/Customer/customerList", {
-          params: { name: this.searchText }
+          params: params
         })
         .then(res => {
           this.tableData = res.data.data;
+          this.total = res.data.total;
         });
+    },
+    // 分页table index
+    table_index(index) {
+      return (this.page - 1) * this.page_size + index + 1;
     },
     // 获取教练列表
     getCoach() {
