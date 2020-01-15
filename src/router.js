@@ -16,11 +16,11 @@ export default new Router({
           path: "index",
           component: () => import("./views/management/index.vue")
         },
-        {
-          path: "memberPushManagement", // 会员推送管理
-          component: () =>
-            import("./views/management/push/memberPushManagement.vue")
-        },
+        // {
+        //   path: "memberPushManagement", // 会员推送管理
+        //   component: () =>
+        //     import("./views/management/push/memberPushManagement.vue")
+        // },
         {
           path: "memberPushManagement/push", // 会员推送录入或修改
           component: () => import("./views/management/push/update.vue")

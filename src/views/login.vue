@@ -39,7 +39,7 @@ export default {
           params: { mobile: this.mobile, pwd: md5(this.pwd) }
         })
         .then(() => {
-          this.$router.push({ path: "/home/memberManagement" });
+          this.$router.push({ path: "/home/index" });
           sessionStorage.setItem("user", this.mobile);
         });
     }

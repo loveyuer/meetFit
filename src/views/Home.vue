@@ -60,6 +60,10 @@ export default {
   .right-bd {
     background-color: #f8f9fb;
     padding: 20px 40px;
+    .wrap {
+      padding: 30px;
+      background: #fff;
+    }
   }
 }
 .cursor {

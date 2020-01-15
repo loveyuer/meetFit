@@ -28,12 +28,20 @@
         <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
-      <span @click="filter = !filter" class="select-btn">筛选</span>
+      <span @click="filter = !filter" class="select-btn"
+        >筛选<i
+          :class="filter ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"
+        ></i
+      ></span>
     </div>
-    <el-button type="text" @click="add" style="float: right"
+    <el-button
+      type="text"
+      @click="add"
+      style="float: right;color: #434A64;"
+      icon="el-icon-circle-plus"
       >添加课程</el-button
     >
-    <el-table :data="tableData" border>
+    <el-table :data="tableData">
       <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="课程名称" prop="name"></el-table-column>
       <el-table-column label="会员人数（人）" prop="number"></el-table-column>
@@ -46,13 +54,9 @@
       <el-table-column label="创建时间" prop="time_h"></el-table-column>
       <el-table-column label="操作" width="300px">
         <template slot-scope="scope">
-          <el-button @click="update(scope.row)" size="mini" type="warning"
-            >修改</el-button
-          >
-          <el-button @click="del(scope.row)" size="mini" type="danger"
-            >删除</el-button
-          >
-          <el-button @click="sendCoach(scope.row)" size="mini" type="primary"
+          <el-button @click="update(scope.row)" type="text">修改</el-button>
+          <el-button @click="del(scope.row)" type="text">删除</el-button>
+          <el-button @click="sendCoach(scope.row)" type="text"
             >课程分配</el-button
           >
         </template>

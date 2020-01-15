@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="" :visible.sync="visible" width="800px" :show-close="false">
+  <el-dialog title="课程分配" :visible.sync="visible" width="800px">
     <div class="btn-wrapper">
       <el-button type="primary" @click="batchDispatch">批量分配</el-button>
       <el-button @click="visible = false">返回列表</el-button>
@@ -107,6 +107,7 @@ export default {
 .btn-wrapper {
   text-align: right;
   margin-bottom: 20px;
+  margin-top: -20px;
 }
 .option-btn {
   cursor: pointer;

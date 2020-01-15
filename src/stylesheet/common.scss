@@ -2,6 +2,9 @@
 .el-table th.is-leaf {
   text-align: center;
 }
+.el-table th.is-leaf{
+  background-color: #F0F0F0;
+}
 .search-wrap {
   display: flex;
   align-items: center;
@@ -32,8 +35,17 @@
 }
 .el-table .cell {
   text-align: center;
+  color: #434A64;
 }
 .el-pagination{
   text-align: right;
   margin-top: 20px;
+  .el-pagination__total{
+    float: left;
+  }
+}
+.select-btn{
+  i{
+    margin-left: 5px;
+  }
 }

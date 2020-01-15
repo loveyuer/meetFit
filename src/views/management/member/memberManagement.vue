@@ -48,9 +48,13 @@
         <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
-      <span @click="filter = !filter" class="select-btn">筛选</span>
+      <span @click="filter = !filter" class="select-btn"
+        >筛选<i
+          :class="filter ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"
+        ></i
+      ></span>
     </div>
-    <el-table :data="tableData" border>
+    <el-table :data="tableData">
       <el-table-column
         label="序号"
         type="index"
@@ -76,15 +80,9 @@
           <!-- <el-button @click="publish(scope.row)" size="mini" type="success"
             >录入</el-button
           > -->
-          <el-button @click="update(scope.row)" size="mini" type="warning"
-            >修改</el-button
-          >
-          <el-button @click="del(scope.row)" size="mini" type="danger"
-            >删除</el-button
-          >
-          <el-button @click="sendCoach(scope.row)" size="mini" type="primary"
-            >分配</el-button
-          >
+          <el-button @click="update(scope.row)" type="text">修改</el-button>
+          <el-button @click="del(scope.row)" type="text">删除</el-button>
+          <el-button @click="sendCoach(scope.row)" type="text">分配</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -216,9 +214,13 @@ export default {
     },
     // 获取教练列表
     getCoach() {
-      this.$http.get("/admin/coach/coachlist").then(res => {
-        this.coachList = res.data.data;
-      });
+      this.$http
+        .get("/admin/coach/coachlist", {
+          params: { page: 1, page_size: 10000 }
+        })
+        .then(res => {
+          this.coachList = res.data.data;
+        });
     },
     // 清空表格
     clearForm() {

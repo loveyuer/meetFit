@@ -31,24 +31,28 @@
         <el-button type="primary" @click="getCoach">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
-      <span @click="filter = !filter" class="select-btn">筛选</span>
+      <span @click="filter = !filter" class="select-btn"
+        >筛选<i
+          :class="filter ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"
+        ></i
+      ></span>
     </div>
-    <el-button type="text" @click="add" style="float: right"
+    <el-button
+      type="text"
+      @click="add"
+      style="float: right;color: #434A64;"
+      icon="el-icon-circle-plus"
       >添加教练</el-button
     >
-    <el-table :data="tableData" border>
+    <el-table :data="tableData">
       <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="教练" prop="name"></el-table-column>
       <el-table-column label="联系方式" prop="mobile"></el-table-column>
       <el-table-column label="注册日期" prop="time_h"></el-table-column>
       <el-table-column label="操作" width="150px">
         <template slot-scope="scope">
-          <el-button @click="update(scope.row)" size="mini" type="warning"
-            >修改</el-button
-          >
-          <el-button @click="del(scope.row)" size="mini" type="danger"
-            >删除</el-button
-          >
+          <el-button @click="update(scope.row)" type="text">修改</el-button>
+          <el-button @click="del(scope.row)" type="text">删除</el-button>
           <!-- <el-button @click="addDetail" size="mini" type="primary"
             >资质录入</el-button
           > -->

@@ -27,9 +27,13 @@
         <el-button type="primary" @click="getData">搜索</el-button>
         <el-button @click="clearForm">清空</el-button>
       </div>
-      <span @click="filter = !filter" class="select-btn">筛选</span>
+      <span @click="filter = !filter" class="select-btn"
+        >筛选<i
+          :class="filter ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"
+        ></i
+      ></span>
     </div>
-    <el-table :data="tableData" border>
+    <el-table :data="tableData">
       <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="教练名称" prop="name"></el-table-column>
       <el-table-column
@@ -42,10 +46,7 @@
       ></el-table-column>
       <el-table-column label="操作" width="300px">
         <template slot-scope="scope">
-          <el-button
-            @click="addAchievement(scope.row)"
-            size="mini"
-            type="primary"
+          <el-button @click="addAchievement(scope.row)" type="text"
             >业绩录入</el-button
           >
         </template>
@@ -69,7 +70,7 @@
     >
       <el-form label-width="80px">
         <el-form-item label="会员选择">
-          <el-select v-model="chooseMember" style="width: 100%">
+          <el-select v-model="chooseMember" style="width: 100%" filterable>
             <el-option
               v-for="item in memberList"
               :key="item.customer_id"
@@ -79,7 +80,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="课程选择">
-          <el-select v-model="chooseCourse" style="width: 100%">
+          <el-select v-model="chooseCourse" style="width: 100%" filterable>
             <el-option
               v-for="item in courseList"
               :key="item.id"
@@ -161,9 +162,13 @@ export default {
     },
     // 获取会员列表
     getMember() {
-      this.$http.get("/admin/Customer/customerList").then(res => {
-        this.memberList = res.data.data;
-      });
+      this.$http
+        .get("/admin/Customer/customerList", {
+          params: { page: 1, page_size: 10000 }
+        })
+        .then(res => {
+          this.memberList = res.data.data;
+        });
     },
     // 翻页
     handleCurrentChange(v) {
@@ -177,9 +182,13 @@ export default {
     },
     // 获取教练列表
     getCourse() {
-      this.$http.get("/admin/Course/courseList").then(res => {
-        this.courseList = res.data.data;
-      });
+      this.$http
+        .get("/admin/Course/courseList", {
+          params: { page: 1, page_size: 10000 }
+        })
+        .then(res => {
+          this.courseList = res.data.data;
+        });
     },
     // 清空表格
     clearForm() {

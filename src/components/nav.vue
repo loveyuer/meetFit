@@ -1,13 +1,13 @@
 <template>
   <div class="nav-wrapper">
     <p class="logo-wrapper"><i></i>ONE MORE私教健身工作室</p>
-    <el-menu default-active="1" background-color="#20222a" text-color="#c2c2c2">
+    <el-menu default-active="1" background-color="#323844" text-color="#c2c2c2">
       <el-menu-item
         v-for="item in nav"
         :key="item.id"
         :index="item.id"
         @click="$router.push(item.router)"
-        >{{ item.name }}</el-menu-item
+        ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
       >
     </el-menu>
   </div>
@@ -20,37 +20,42 @@ export default {
         {
           id: "1",
           name: "首页",
-          router: "index"
+          router: "index",
+          icon: "el-icon-s-home"
         },
-        {
-          id: "2",
-          name: "会员推送管理",
-          router: "memberPushManagement"
-        },
+        // {
+        //   id: "2",
+        //   name: "会员推送管理",
+        //   router: "memberPushManagement"
+        // },
         {
           id: "3",
           name: "会员管理",
-          router: "memberManagement"
+          router: "memberManagement",
+          icon: "el-icon-s-custom"
         },
         {
           id: "4",
           name: "教练管理",
-          router: "coachManagement"
+          router: "coachManagement",
+          icon: "el-icon-user-solid"
         },
         {
           id: "5",
           name: "课程管理",
-          router: "courseManagement"
+          router: "courseManagement",
+          icon: "el-icon-notebook-1"
         },
-        {
-          id: "6",
-          name: "消课统计",
-          router: "eliminationClassManagement"
-        },
+        // {
+        //   id: "6",
+        //   name: "消课统计",
+        //   router: "eliminationClassManagement"
+        // },
         {
           id: "7",
           name: "业绩管理",
-          router: "achievementManagement"
+          router: "achievementManagement",
+          icon: "el-icon-s-check"
         }
         // {
         //   id: "8",
@@ -84,14 +89,14 @@ export default {
 </script>
 <style lang="scss">
 .nav-wrapper {
-  width: 288px;
+  width: 300px;
   height: 100%;
   position: fixed;
   z-index: 1;
   .logo-wrapper {
     font-size: 14px;
     height: 90px;
-    background-color: #3399ff;
+    background-color: #22262f;
     font-weight: bold;
     text-align: center;
     line-height: 90px;
@@ -100,9 +105,19 @@ export default {
   .el-menu {
     height: 100%;
     border-right: 0;
+    .is-active {
+      background: #22262f !important;
+    }
     li {
-      padding-left: 50px !important;
+      padding-left: 54px !important;
       text-align: left;
+      height: 70px;
+      line-height: 70px;
+      i {
+        vertical-align: middle;
+        margin-bottom: 2px;
+        margin-right: 30px;
+      }
     }
   }
 }
