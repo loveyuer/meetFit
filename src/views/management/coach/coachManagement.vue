@@ -78,6 +78,24 @@
         <el-form-item label="联系电话">
           <el-input v-model="msgForm.mobile"></el-input>
         </el-form-item>
+        <el-form-item label="教练擅长">
+          <div class="input-wrap">
+            <el-input
+              v-for="(item, index) of 3"
+              :key="index"
+              v-model="msgForm.good[index]"
+            ></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="教练标签">
+          <div class="input-wrap">
+            <el-input
+              v-for="(item, index) of 2"
+              :key="index"
+              v-model="msgForm.tag[index]"
+            ></el-input>
+          </div>
+        </el-form-item>
         <el-button type="primary" @click="submit">确定</el-button>
         <el-button @click="close">取消</el-button>
       </el-form>
@@ -101,7 +119,9 @@ export default {
       msgForm: {
         name: "",
         mobile: "",
-        coach_id: ""
+        coach_id: "",
+        good: [],
+        tag: []
       },
       type: "add",
       // 分页
@@ -117,6 +137,8 @@ export default {
       this.msgForm.name = row.name;
       this.msgForm.mobile = row.mobile;
       this.msgForm.coach_id = row.coach_id;
+      this.msgForm.good = row.lable.split(" ");
+      this.msgForm.tag = row.signature.split(" ");
       this.msgVisible = true;
     },
     add() {
@@ -129,18 +151,22 @@ export default {
     submit() {
       const url =
         this.type === "add"
-          ? "/admin/coach/coachAdd"
-          : "/admin/coach/coachUpdate";
+          ? "/index.php/admin/coach/coachAdd"
+          : "/index.php/admin/coach/coachUpdate";
       let params = {};
       if (this.type === "add") {
         params = {
           name: this.msgForm.name,
-          mobile: this.msgForm.mobile
+          mobile: this.msgForm.mobile,
+          lable: this.msgForm.good.join(" "),
+          signature: this.msgForm.tag.join(" ")
         };
       } else {
         params = {
           coach_id: this.msgForm.coach_id,
-          mobile: this.msgForm.mobile
+          mobile: this.msgForm.mobile,
+          lable: this.msgForm.good.join(" "),
+          signature: this.msgForm.tag.join(" ")
         };
       }
       this.$http.get(url, { params }).then(res => {
@@ -154,6 +180,8 @@ export default {
       this.msgForm.coach_id = "";
       this.msgForm.mobile = "";
       this.msgVisible = false;
+      this.msgForm.good = [];
+      this.msgForm.tag = [];
     },
     del(row) {
       this.$confirm("确认删除此教练吗?", "提示", {
@@ -163,7 +191,7 @@ export default {
       })
         .then(() => {
           this.$http
-            .get(`/admin/coach/coachDel?coach_id=${row.coach_id}`)
+            .get(`/index.php/admin/coach/coachDel?coach_id=${row.coach_id}`)
             .then(res => {
               this.$message(res.msg);
               this.getCoach();
@@ -196,10 +224,12 @@ export default {
         page: this.page,
         page_size: this.page_size
       };
-      this.$http.get("/admin/coach/coachlist", { params: params }).then(res => {
-        this.tableData = res.data.data;
-        this.total = res.data.total;
-      });
+      this.$http
+        .get("/index.php/admin/coach/coachlist", { params: params })
+        .then(res => {
+          this.tableData = res.data.data;
+          this.total = res.data.total;
+        });
     },
     // 清空表格
     clearForm() {
@@ -217,3 +247,11 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-wrap {
+  display: flex;
+  .el-input {
+    margin-right: 5px;
+  }
+}
+</style>

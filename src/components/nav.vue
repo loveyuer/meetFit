@@ -1,6 +1,6 @@
 <template>
   <div class="nav-wrapper">
-    <p class="logo-wrapper"><i></i>ONE MORE私教健身工作室</p>
+    <p class="logo-wrapper"><i></i>{{ gymName }}</p>
     <el-menu default-active="1" background-color="#323844" text-color="#c2c2c2">
       <el-menu-item
         v-for="item in nav"
@@ -84,6 +84,12 @@ export default {
         // }
       ]
     };
+  },
+  computed: {
+    gymName() {
+      const info = JSON.parse(sessionStorage.getItem("user"));
+      return info.gymName;
+    }
   }
 };
 </script>

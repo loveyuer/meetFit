@@ -9,7 +9,6 @@ export default {
       option: {
         title: {
           text: "课程消耗分布统计",
-          subtext: "one more 私教健身工作室",
           subtextStyle: {
             fontSize: "16px",
             color: "#ccc"

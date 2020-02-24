@@ -31,8 +31,12 @@
     <el-form-item label="备注提醒">
       <el-input v-model="msgForm.note"></el-input>
     </el-form-item>
-    <el-button type="primary" @click="submit">确定</el-button>
-    <el-button @click="$router.push('/home/memberManagement')">取消</el-button>
+    <el-form-item>
+      <el-button type="primary" @click="submit">确定</el-button>
+      <el-button @click="$router.push('/home/memberManagement')"
+        >取消</el-button
+      >
+    </el-form-item>
   </el-form>
 </template>
 <script>
@@ -45,7 +49,7 @@ export default {
   methods: {
     submit() {
       //   const url = this.type === "add" ? "" : "/admin/Customer/customerUpdate";
-      const url = "/admin/Customer/customerUpdate";
+      const url = "/index.php/admin/Customer/customerUpdate";
       this.$http.get(url, { params: this.msgForm }).then(res => {
         if (res.code === "1") {
           this.$message(res.msg);
@@ -56,3 +60,11 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.msgForm {
+  .el-form-item__content {
+    text-align: left;
+    width: 40%;
+  }
+}
+</style>

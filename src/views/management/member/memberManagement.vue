@@ -161,7 +161,9 @@ export default {
       })
         .then(() => {
           this.$http
-            .get(`/admin/Customer/customerDel?customer_id=${row.customer_id}`)
+            .get(
+              `/index.php/admin/Customer/customerDel?customer_id=${row.customer_id}`
+            )
             .then(res => {
               this.$message(res.msg);
               this.getData();
@@ -200,7 +202,7 @@ export default {
         page_size: this.page_size
       };
       this.$http
-        .get("/admin/Customer/customerList", {
+        .get("/index.php/admin/Customer/customerList", {
           params: params
         })
         .then(res => {
@@ -215,7 +217,7 @@ export default {
     // 获取教练列表
     getCoach() {
       this.$http
-        .get("/admin/coach/coachlist", {
+        .get("/index.php/admin/coach/coachlist", {
           params: { page: 1, page_size: 10000 }
         })
         .then(res => {
@@ -240,7 +242,7 @@ export default {
     confirmCoach() {
       this.$http
         .get(
-          `/admin/Customer/customerDefaultCoach?coach_id=${this.chooseCoach}&customer_id=${this.chooseUser}`
+          `/index.php/admin/Customer/customerDefaultCoach?coach_id=${this.chooseCoach}&customer_id=${this.chooseUser}`
         )
         .then(res => {
           if (res.code === "1") {

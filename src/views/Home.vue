@@ -3,7 +3,7 @@
     <nav-menu></nav-menu>
     <div class="bd-right">
       <div class="right-top">
-        <div class="title"><img src alt />遇健私教平台管理后台</div>
+        <div class="title"><img src alt /> MEET-FIT约课系统管理平台</div>
         <div class="option">
           <span style="margin-right: 10px;">
             <i class="el-icon-service"></i>联系客服
@@ -32,13 +32,14 @@ export default {
   },
   computed: {
     user() {
-      return sessionStorage.getItem("user");
+      const info = JSON.parse(sessionStorage.getItem("user"));
+      return info.userName;
     }
   },
   methods: {
     // 退出登录
     logOut() {
-      this.$http.get("/admin/index/logout").then(() => {
+      this.$http.get("/index.php/admin/index/logout").then(() => {
         this.$router.push("/");
       });
     }

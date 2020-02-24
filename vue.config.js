@@ -1,12 +1,12 @@
 module.exports = {
   devServer: {
     proxy: {
-      "/admin": {
+      "/index.php": {
         target: "http://121.41.95.148",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/admin": "/index.php/admin"
+          "^/index.php": "/index.php"
         }
       }
     }

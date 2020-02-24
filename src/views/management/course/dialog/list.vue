@@ -69,7 +69,7 @@ export default {
       const bind = status === 1 ? 0 : 1;
       this.$http
         .get(
-          `admin/Course/courseBindCoach?course_id=${this.courseId}&coach_ids=${id}&bind=${bind}`
+          `/index.php/admin/Course/courseBindCoach?course_id=${this.courseId}&coach_ids=${id}&bind=${bind}`
         )
         .then(res => {
           if (res.code === "1") {

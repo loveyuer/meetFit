@@ -32,9 +32,9 @@ Vue.prototype.$http.interceptors.response.use(
   res => {
     const self = Vue.prototype;
     if (res.data.code === "4001") {
-      router.replace("/login");
+      router.replace("/");
       return Promise.reject(res.data);
-    } else if (res.data.code === "1") {
+    } else if (res.data.code === "1" || res.status === 200) {
       return res.data;
     } else {
       self.$message(res.data.message);

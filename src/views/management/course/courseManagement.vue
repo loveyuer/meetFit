@@ -160,7 +160,7 @@ export default {
       courseVisible: false,
       coachData: [],
       courseId: 0,
-      defaultTime: [],
+      defaultTime: "",
       // 分页
       page: 1,
       page_size: 10,
@@ -190,7 +190,7 @@ export default {
       })
         .then(() => {
           this.$http
-            .get(`/admin/course/courseDel?course_id=${row.id}`)
+            .get(`/index.php/admin/course/courseDel?course_id=${row.id}`)
             .then(res => {
               this.$message(res.msg);
               this.getData();
@@ -211,8 +211,8 @@ export default {
     submit() {
       const url =
         this.type === "add"
-          ? "/admin/course/courseAdd"
-          : "/admin/course/courseUpdate";
+          ? "/index.php/admin/course/courseAdd"
+          : "/index.php/admin/course/courseUpdate";
       this.msgForm.course_id = this.msgForm.id;
       this.msgForm.auto_finish = Number(this.msgForm.auto_finish);
       this.$http.get(url, { params: this.msgForm }).then(res => {
@@ -242,7 +242,7 @@ export default {
         page_size: this.page_size
       };
       this.$http
-        .get("/admin/Course/courseList", { params: params })
+        .get("/index.php/admin/Course/courseList", { params: params })
         .then(res => {
           this.tableData = res.data.data;
           this.total = res.data.total;
@@ -250,7 +250,7 @@ export default {
     },
     // 获取教练列表
     getCoach() {
-      this.$http.get("/admin/coach/coachlist").then(res => {
+      this.$http.get("/index.php/admin/coach/coachlist").then(res => {
         this.coachList = res.data.data;
       });
     },
@@ -267,7 +267,7 @@ export default {
       this.courseVisible = true;
       this.courseId = row.id;
       this.$http
-        .get(`admin/course/courseCoachList?course_id=${row.id}`)
+        .get(`/index.php/admin/course/courseCoachList?course_id=${row.id}`)
         .then(res => {
           this.coachData = res.data.data;
         });
@@ -280,7 +280,7 @@ export default {
     confirmCoach() {
       this.$http
         .get(
-          `/admin/Customer/customerDefaultCoach?coach_id=${this.chooseCoach}&customer_id=${this.chooseUser}`
+          `/index.php/admin/Customer/customerDefaultCoach?coach_id=${this.chooseCoach}&customer_id=${this.chooseUser}`
         )
         .then(res => {
           if (res.code === "1") {

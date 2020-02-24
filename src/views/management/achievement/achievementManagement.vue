@@ -152,7 +152,7 @@ export default {
         page_size: this.page_size
       };
       this.$http
-        .get("/admin/achievement/coachList", {
+        .get("/index.php/admin/achievement/coachList", {
           params: params
         })
         .then(res => {
@@ -163,7 +163,7 @@ export default {
     // 获取会员列表
     getMember() {
       this.$http
-        .get("/admin/Customer/customerList", {
+        .get("/index.php/admin/Customer/customerList", {
           params: { page: 1, page_size: 10000 }
         })
         .then(res => {
@@ -183,7 +183,7 @@ export default {
     // 获取教练列表
     getCourse() {
       this.$http
-        .get("/admin/Course/courseList", {
+        .get("/index.php/admin/Course/courseList", {
           params: { page: 1, page_size: 10000 }
         })
         .then(res => {
@@ -216,7 +216,7 @@ export default {
         course_count: this.courseCount
       };
       this.$http
-        .get("/admin/achievement/achievementAdd", { params })
+        .get("/index.php/admin/achievement/achievementAdd", { params })
         .then(res => {
           if (res.code === "1") {
             this.$message(res.msg);
