@@ -79,12 +79,12 @@
           <el-input v-model="msgForm.name"></el-input>
         </el-form-item>
         <el-form-item label="课程人数">
-          <el-input v-model="msgForm.mobile"></el-input>
+          <el-input v-model="msgForm.number" disabled></el-input>
         </el-form-item>
         <el-form-item label="课程时间">
-          <el-input v-model="msgForm.period">
+          <el-input v-model="msgForm.period" disabled>
             <template slot="append"
-              >分钟</template
+              >小时</template
             ></el-input
           >
         </el-form-item>
@@ -177,6 +177,8 @@ export default {
       this.msgVisible = true;
       this.msgForm = row;
       this.msgForm.auto_finish = Boolean(this.msgForm.auto_finish);
+      this.msgForm.number = 1;
+      this.msgForm.period = 1;
       this.defaultTime = [
         `${row.use_time_start}:00:00`,
         `${row.use_time_end}:00:00`
@@ -220,6 +222,8 @@ export default {
           this.$message(res.msg);
           this.msgVisible = false;
           this.getData();
+        } else {
+          this.$message(res.msg);
         }
       });
     },
@@ -257,7 +261,7 @@ export default {
     // 清空表格
     clearForm() {
       this.name = "";
-      this.mobile = "";
+      this.number = "";
       this.coach = "";
       this.status = "";
       this.dateCreate = null;
