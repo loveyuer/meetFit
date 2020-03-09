@@ -171,6 +171,8 @@ export default {
     add() {
       this.type = "add";
       this.msgVisible = true;
+      this.msgForm.number = 1;
+      this.msgForm.period = 1;
     },
     update(row) {
       this.type = "edit";
