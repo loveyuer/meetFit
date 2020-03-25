@@ -45,7 +45,7 @@
       <el-table-column label="序号" type="index" width="50px"></el-table-column>
       <el-table-column label="课程名称" prop="name"></el-table-column>
       <el-table-column label="会员人数（人）" prop="number"></el-table-column>
-      <el-table-column label="课程时间（分钟）" prop="period"></el-table-column>
+      <el-table-column label="课程时间（小时）" prop="period"></el-table-column>
       <el-table-column label="课程售价（元）" prop="price"></el-table-column>
       <el-table-column
         label="自动签课状态"

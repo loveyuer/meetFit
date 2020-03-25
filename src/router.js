@@ -86,9 +86,8 @@ export default new Router({
           component: () => import("./views/management/statistics.vue")
         },
         {
-          path: "messageAuthorityManagement",
-          component: () =>
-            import("./views/management/messageAuthorityManagement.vue")
+          path: "messageManagement",
+          component: () => import("./views/management/messageManagement.vue")
         },
         {
           path: "roleAuthorityManagement",

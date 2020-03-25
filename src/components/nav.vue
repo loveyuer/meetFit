@@ -1,12 +1,13 @@
 <template>
   <div class="nav-wrapper">
     <p class="logo-wrapper"><i></i>{{ gymName }}</p>
-    <el-menu default-active="1" background-color="#323844" text-color="#c2c2c2">
-      <el-menu-item
-        v-for="item in nav"
-        :key="item.id"
-        :index="item.id"
-        @click="$router.push(item.router)"
+    <el-menu
+      :default-active="this.$route.path"
+      router
+      background-color="#323844"
+      text-color="#c2c2c2"
+    >
+      <el-menu-item v-for="item in nav" :key="item.router" :index="item.router"
         ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
       >
     </el-menu>
@@ -20,7 +21,7 @@ export default {
         {
           id: "1",
           name: "首页",
-          router: "index",
+          router: "/home/index",
           icon: "el-icon-s-home"
         },
         // {
@@ -31,19 +32,19 @@ export default {
         {
           id: "3",
           name: "会员管理",
-          router: "memberManagement",
+          router: "/home/memberManagement",
           icon: "el-icon-s-custom"
         },
         {
           id: "4",
           name: "教练管理",
-          router: "coachManagement",
+          router: "/home/coachManagement",
           icon: "el-icon-user-solid"
         },
         {
           id: "5",
           name: "课程管理",
-          router: "courseManagement",
+          router: "/home/courseManagement",
           icon: "el-icon-notebook-1"
         },
         // {
@@ -54,9 +55,9 @@ export default {
         {
           id: "7",
           name: "业绩管理",
-          router: "achievementManagement",
+          router: "/home/achievementManagement",
           icon: "el-icon-s-check"
-        }
+        },
         // {
         //   id: "8",
         //   name: "薪资模板管理",
@@ -72,11 +73,12 @@ export default {
         //   name: "统计分析",
         //   router: "statistics"
         // },
-        // {
-        //   id: "11",
-        //   name: "短信权限管理",
-        //   router: "messageAuthorityManagement"
-        // },
+        {
+          id: "11",
+          name: "短信管理",
+          router: "/home/messageManagement",
+          icon: "el-icon-chat-line-round"
+        }
         // {
         //   id: "12",
         //   name: "角色权限管理",

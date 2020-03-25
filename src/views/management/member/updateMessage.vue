@@ -46,14 +46,27 @@ export default {
       msgForm: {}
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      this.$http
+        .get(
+          `/index.php/admin/Customer/customerList?customer_id=${this.$route.params.id}`
+        )
+        .then(res => {
+          this.msgForm = res.data.data[0];
+        });
+    },
     submit() {
-      //   const url = this.type === "add" ? "" : "/admin/Customer/customerUpdate";
       const url = "/index.php/admin/Customer/customerUpdate";
       this.$http.get(url, { params: this.msgForm }).then(res => {
         if (res.code === "1") {
           this.$message(res.msg);
           this.$router.push("/home/memberManagement");
+        } else {
+          this.$message(res.msg);
         }
       });
     }

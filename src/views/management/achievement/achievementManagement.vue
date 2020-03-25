@@ -49,6 +49,9 @@
           <el-button @click="addAchievement(scope.row)" type="text"
             >业绩录入</el-button
           >
+          <el-button @click="achievementDetail(scope.row)" type="text"
+            >业绩详情</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -222,11 +225,17 @@ export default {
             this.$message(res.msg);
             this.achievementVisible = false;
             this.getData();
+          } else {
+            this.$message(res.msg);
           }
         })
         .catch(e => {
           this.$message(e.msg);
         });
+    },
+    //业绩详情
+    achievementDetail(row) {
+      this.$router.push(`/home/achievementManagement/detail/${row.coach_id}`);
     }
   },
   created() {

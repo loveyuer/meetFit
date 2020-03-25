@@ -164,6 +164,7 @@ export default {
       } else {
         params = {
           coach_id: this.msgForm.coach_id,
+          name: this.msgForm.name,
           mobile: this.msgForm.mobile,
           lable: this.msgForm.good.join(" "),
           signature: this.msgForm.tag.join(" ")
