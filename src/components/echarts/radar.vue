@@ -50,25 +50,27 @@ export default {
   },
   methods: {
     initData() {
-      this.radarData.map(item => {
-        this.option.radar.indicator.push({
-          text: item.name,
-          max: 7
+      if (this.radarData.length) {
+        this.radarData.map(item => {
+          this.option.radar.indicator.push({
+            text: item.name,
+            max: 7
+          });
+          this.option.series[0].data[0].value.push(item.value);
         });
-        this.option.series[0].data[0].value.push(item.value);
-      });
+      }
     },
     initEcharts() {
+      this.initData();
       let myChart = this.$echarts.init(document.getElementById("radarChart"));
       const option = this.option;
       myChart.setOption(option);
     }
   },
-  created() {
-    this.initData();
-  },
   mounted() {
-    this.initEcharts();
+    setTimeout(() => {
+      this.initEcharts();
+    }, 500);
   }
 };
 </script>

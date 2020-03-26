@@ -54,147 +54,112 @@ export default {
       barData: [
         {
           name: "今日销售",
-          value: 2.1
+          value: 0
         },
         {
           name: "昨日销售",
-          value: 3.8
+          value: 0
         },
         {
           name: "本月累计",
-          value: 4.5
+          value: 0
         },
         {
           name: "上月累计",
-          value: 3.4
+          value: 0
         }
       ],
       // 会员总量
       memberCount: {
-        num: "15223人",
-        text: "会员总量",
+        num: "0",
+        text: "会员总量/人",
         data: {
-          today: "+7999",
-          month: "+5009"
+          today: "0",
+          month: "0"
         },
         color: "#10d272"
       },
       // 会员余额汇总
       stayCount: {
         num: "3029400.00元",
-        text: "会员余额汇总",
+        text: "会员余额汇总/元",
         data: {
-          today: "+15.3万",
-          month: "+25.8万"
+          today: "0",
+          month: "0"
         },
         color: "#12a5e9"
       },
       // 今日数据
       todayData: {
-        appointment: 88,
-        cancle: 22,
-        surplus: 4
+        appointment: 0,
+        cancle: 0,
+        surplus: 0
       },
       // 折线图数据
-      lineData: [
-        {
-          name: "上周业绩",
-          value: [0, 4, 15, 11, 3, 5, 9]
-        },
-        {
-          name: "本周业绩",
-          value: [0, 2, 13, 7, 10, 3, 11]
-        }
-      ],
+      lineData: {},
       // 双柱状图数据
       multiBarData: [
         {
-          key: "上周业绩",
-          value: [
-            {
-              name: "徐玲玲",
-              data: 2
-            },
-            {
-              name: "李冰",
-              data: 7
-            },
-            {
-              name: "孙芳芳",
-              data: 2
-            },
-            {
-              name: "吴晓东",
-              data: 9
-            },
-            {
-              name: "林强",
-              data: 6
-            },
-            {
-              name: "王楠",
-              data: 3
-            }
-          ]
+          key: "本周销售金额",
+          value: []
         },
         {
-          key: "本周业绩",
-          value: [
-            {
-              name: "徐玲玲",
-              data: 5
-            },
-            {
-              name: "李冰",
-              data: 6
-            },
-            {
-              name: "孙芳芳",
-              data: 2
-            },
-            {
-              name: "吴晓东",
-              data: 4
-            },
-            {
-              name: "林强",
-              data: 6
-            },
-            {
-              name: "王楠",
-              data: 2
-            }
-          ]
+          key: "本周消课金额",
+          value: []
         }
       ],
       // 雷达图数据
-      radarData: [
-        {
-          name: "一对一私教课",
-          value: 2
-        },
-        {
-          name: "精品格斗课",
-          value: 5
-        },
-        {
-          name: "普拉提小团课",
-          value: 2
-        },
-        {
-          name: "竞技减脂课",
-          value: 5
-        },
-        {
-          name: "精品拉伸课",
-          value: 5
-        },
-        {
-          name: "体适能训练课",
-          value: 7
-        }
-      ]
+      radarData: []
     };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      this.$http.post("/index.php/admin/index/index_data").then(res => {
+        this.barData[0].value = res.data.today_money;
+        this.barData[1].value = res.data.yestoday_money;
+        this.barData[2].value = res.data.month_money;
+        this.barData[3].value = res.data.last_month_money;
+        this.memberCount.num = res.data.user_total;
+        this.memberCount.data.today = res.data.user_today_total;
+        this.memberCount.data.month = res.data.user_month_total;
+        this.stayCount.num = res.data.user_money_total;
+        this.stayCount.data.today = res.data.user_momey_today_total;
+        this.stayCount.data.month = res.data.user_momey_month_total;
+        this.todayData.appointment = res.data.today_course_total;
+        this.todayData.cancle = res.data.today_course_cancel;
+        this.todayData.surplus = res.data.today_course_surplus;
+        this.lineData = res.data.month_money_list;
+        if (res.data.week_money_list.length)
+          this.handleCoachData(res.data.week_money_list);
+        if (res.data.course_end_list)
+          this.handleCourseData(res.data.course_end_list);
+      });
+    },
+    // 处理教练数据
+    handleCoachData(data) {
+      data.forEach(item => {
+        this.multiBarData[0].value.push({
+          name: item.coach_name,
+          data: item.sale_money
+        });
+        this.multiBarData[1].value.push({
+          name: item.coach_name,
+          data: item.over_money
+        });
+      });
+    },
+    // 处理课程消耗数据
+    handleCourseData(data) {
+      for (const item of Object.keys(data)) {
+        this.radarData.push({
+          name: data[item].course_name,
+          value: data[item].course_num
+        });
+      }
+    }
   }
 };
 </script>
@@ -214,6 +179,7 @@ export default {
     margin-top: 25px;
     .item-container {
       background-color: #fff;
+      padding: 10px;
     }
   }
 }

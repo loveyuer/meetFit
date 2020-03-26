@@ -18,7 +18,7 @@ export default {
           }
         },
         legend: {
-          data: ["上周业绩", "本周业绩"]
+          data: ["本周销售金额", "本周消课金额"]
         },
         xAxis: {
           type: "value"
@@ -30,12 +30,12 @@ export default {
         },
         series: [
           {
-            name: "上周业绩",
+            name: "本周销售金额",
             type: "bar",
             data: []
           },
           {
-            name: "本周业绩",
+            name: "本周消课金额",
             type: "bar",
             data: []
           }
@@ -46,7 +46,7 @@ export default {
   methods: {
     initData() {
       this.multiBarData.map(item => {
-        if (item.key === "上周业绩") {
+        if (item.key === "本周销售金额") {
           item.value.map(v => {
             this.option.series[0].data.push(v.data);
           });
@@ -61,6 +61,7 @@ export default {
       });
     },
     initEcharts() {
+      this.initData();
       let myChart = this.$echarts.init(
         document.getElementById("multiBarChart")
       );
@@ -68,11 +69,10 @@ export default {
       myChart.setOption(option);
     }
   },
-  created() {
-    this.initData();
-  },
   mounted() {
-    this.initEcharts();
+    setTimeout(() => {
+      this.initEcharts();
+    }, 500);
   }
 };
 </script>

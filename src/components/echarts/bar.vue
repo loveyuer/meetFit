@@ -3,7 +3,12 @@
 </template>
 <script>
 export default {
-  props: ["barData"],
+  props: {
+    barData: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       option: {
@@ -54,15 +59,15 @@ export default {
     },
     initEcharts() {
       let myChart = this.$echarts.init(document.getElementById("myChart"));
+      this.initData();
       const option = this.option;
       myChart.setOption(option);
     }
   },
-  created() {
-    this.initData();
-  },
   mounted() {
-    this.initEcharts();
+    setTimeout(() => {
+      this.initEcharts();
+    }, 400);
   }
 };
 </script>

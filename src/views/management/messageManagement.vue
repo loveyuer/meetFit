@@ -14,6 +14,7 @@
             v-model="scope.row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
+            :disabled="scope.row.params === 'login_btn'"
             @change="changeStatus(scope.row)"
           >
           </el-switch>

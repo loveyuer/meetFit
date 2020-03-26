@@ -9,13 +9,13 @@ export default {
       option: {
         color: ["#10d272", "#12a5e9"],
         title: {
-          text: "周业绩对比图"
+          text: "月业绩对比图"
         },
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data: ["上周业绩", "本周业绩"]
+          data: ["业绩", "消课金额"]
         },
         grid: {
           left: "3%",
@@ -26,20 +26,20 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: false,
-          data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+          data: []
         },
         yAxis: {
           type: "value"
         },
         series: [
           {
-            name: "上周业绩",
+            name: "业绩",
             type: "line",
             data: [],
             smooth: true
           },
           {
-            name: "本周业绩",
+            name: "消课金额",
             type: "line",
             data: [],
             smooth: true
@@ -50,25 +50,29 @@ export default {
   },
   methods: {
     initData() {
-      this.lineData.map(item => {
-        if (item.name === "上周业绩") {
-          this.option.series[0].data = item.value;
-        } else {
-          this.option.series[1].data = item.value;
-        }
-      });
+      const every_month_money = [];
+      const every_month_money_over = [];
+      for (const item of Object.keys(this.lineData.every_month_money)) {
+        this.option.xAxis.data.push(`${item}月`);
+        every_month_money.push(this.lineData.every_month_money[item]);
+      }
+      for (const item of Object.keys(this.lineData.every_month_money_over)) {
+        every_month_money_over.push(this.lineData.every_month_money_over[item]);
+      }
+      this.option.series[0].data = every_month_money;
+      this.option.series[1].data = every_month_money_over;
     },
     initEcharts() {
+      this.initData();
       let myChart = this.$echarts.init(document.getElementById("lineChart"));
       const option = this.option;
       myChart.setOption(option);
     }
   },
-  created() {
-    this.initData();
-  },
   mounted() {
-    this.initEcharts();
+    setTimeout(() => {
+      this.initEcharts();
+    }, 500);
   }
 };
 </script>
