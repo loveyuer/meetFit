@@ -156,7 +156,7 @@ export default {
       for (const item of Object.keys(data)) {
         this.radarData.push({
           name: data[item].course_name,
-          value: data[item].course_num
+          value: data[item].month_money_over
         });
       }
     }

@@ -31,6 +31,7 @@ export default {
             data: [
               {
                 value: [],
+                name: "课程消耗",
                 areaStyle: {
                   normal: {
                     color: "rgba(204, 255, 255, 0.5)"
@@ -54,7 +55,7 @@ export default {
         this.radarData.map(item => {
           this.option.radar.indicator.push({
             text: item.name,
-            max: 7
+            max: 900
           });
           this.option.series[0].data[0].value.push(item.value);
         });
