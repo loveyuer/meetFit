@@ -83,6 +83,15 @@
           <el-button @click="update(scope.row)" type="text">修改</el-button>
           <el-button @click="del(scope.row)" type="text">删除</el-button>
           <el-button @click="sendCoach(scope.row)" type="text">分配</el-button>
+          <el-button
+            type="text"
+            @click="
+              $router.push(
+                `/home/memberManagement/courseDetail/id=${scope.row.customer_id}`
+              )
+            "
+            >课程详情</el-button
+          >
         </template>
       </el-table-column>
     </el-table>

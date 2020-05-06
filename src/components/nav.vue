@@ -10,6 +10,12 @@
       <el-menu-item v-for="item in nav" :key="item.router" :index="item.router"
         ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
       >
+      <el-menu-item
+        v-for="item in adminNav"
+        :key="item.router"
+        :index="item.router"
+        ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
+      >
     </el-menu>
   </div>
 </template>
@@ -17,6 +23,14 @@
 export default {
   data() {
     return {
+      // adminNav: [
+      //   {
+      //     id: "123",
+      //     name: "管理平台",
+      //     router: "/home/messageManage",
+      //     icon: "el-icon-chat-line-round"
+      //   }
+      // ],
       nav: [
         {
           id: "1",

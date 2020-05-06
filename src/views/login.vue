@@ -119,7 +119,7 @@ export default {
             mobile: this.mobile || this.userName,
             pwd: this.activeName === "2" ? md5(this.pwd) : null,
             type: this.activeName,
-            code: this.valid || this.mobileCode
+            code: this.activeName === "1" ? this.mobileCode : this.valid
           }
         })
         .then(res => {

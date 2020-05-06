@@ -35,6 +35,10 @@ export default new Router({
           component: () => import("./views/management/member/updateMessage.vue")
         },
         {
+          path: "memberManagement/courseDetail/id=:id", // 会员信息修改
+          component: () => import("./views/management/member/courseDetail.vue")
+        },
+        {
           path: "coachManagement", // 教练管理
           component: () =>
             import("./views/management/coach/coachManagement.vue")
@@ -93,6 +97,10 @@ export default new Router({
           path: "roleAuthorityManagement",
           component: () =>
             import("./views/management/roleAuthorityManagement.vue")
+        },
+        {
+          path: "messageManage",
+          component: () => import("./views/management/adminMessage.vue")
         }
       ]
     },
