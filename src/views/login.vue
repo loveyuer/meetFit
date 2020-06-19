@@ -124,13 +124,19 @@ export default {
         })
         .then(res => {
           if (res.code === "1") {
-            this.$router.push({ path: "/home/index" });
             const info = {
               userName: this.mobile || this.userName,
               gymName: res.gym_name
             };
             this.pwd = "";
             sessionStorage.setItem("user", JSON.stringify(info));
+            if (res.gym_id === 1) {
+              sessionStorage.setItem("admin", 1);
+              this.$router.push({ path: "/home/messageManage" });
+            } else {
+              sessionStorage.setItem("admin", 0);
+              this.$router.push({ path: "/home/index" });
+            }
           } else {
             this.$message.warning(res.msg);
           }

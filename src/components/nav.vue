@@ -1,21 +1,27 @@
 <template>
   <div class="nav-wrapper">
-    <p class="logo-wrapper"><i></i>{{ gymName }}</p>
+    <p class="logo-wrapper">
+      <i></i>
+      {{ gymName }}
+    </p>
     <el-menu
       :default-active="this.$route.path"
       router
       background-color="#323844"
       text-color="#c2c2c2"
     >
-      <el-menu-item v-for="item in nav" :key="item.router" :index="item.router"
-        ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
-      >
-      <el-menu-item
-        v-for="item in adminNav"
-        :key="item.router"
-        :index="item.router"
-        ><i :class="item.icon"></i>{{ item.name }}</el-menu-item
-      >
+      <div v-if="!admin">
+        <el-menu-item v-for="item in nav" :key="item.router" :index="item.router">
+          <i :class="item.icon"></i>
+          {{ item.name }}
+        </el-menu-item>
+      </div>
+      <div v-else>
+        <el-menu-item v-for="item in adminNav" :key="item.router" :index="item.router">
+          <i :class="item.icon"></i>
+          {{ item.name }}
+        </el-menu-item>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -23,14 +29,14 @@
 export default {
   data() {
     return {
-      // adminNav: [
-      //   {
-      //     id: "123",
-      //     name: "管理平台",
-      //     router: "/home/messageManage",
-      //     icon: "el-icon-chat-line-round"
-      //   }
-      // ],
+      adminNav: [
+        {
+          id: "123",
+          name: "管理平台",
+          router: "/home/messageManage",
+          icon: "el-icon-chat-line-round"
+        }
+      ],
       nav: [
         {
           id: "1",
@@ -98,13 +104,21 @@ export default {
         //   name: "角色权限管理",
         //   router: "roleAuthorityManagement"
         // }
-      ]
+      ],
+      admin: false
     };
   },
   computed: {
     gymName() {
       const info = JSON.parse(sessionStorage.getItem("user"));
       return info.gymName;
+    }
+  },
+  created() {
+    if (sessionStorage.getItem('admin') === "1") {
+      this.admin = true;
+    } else {
+      this.admin = false;
     }
   }
 };

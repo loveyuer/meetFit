@@ -208,12 +208,12 @@ export default {
     // 翻页
     handleCurrentChange(v) {
       this.page = v;
-      this.getData();
+      this.getCoach();
     },
     // 设置每页条数
     handleSizeChange(v) {
       this.page_size = v;
-      this.getData();
+      this.getCoach();
     },
     // 获取教练列表
     getCoach() {
