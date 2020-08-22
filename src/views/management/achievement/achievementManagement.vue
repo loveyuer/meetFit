@@ -136,15 +136,6 @@ export default {
     }
   },
   methods: {
-    update(row) {
-      alert(row);
-    },
-    del(row) {
-      alert(row);
-    },
-    publish(row) {
-      alert(row);
-    },
     // 获取教练列表
     getData() {
       const params = {

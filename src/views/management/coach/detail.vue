@@ -1,6 +1,6 @@
 <template>
   <div class="coach-detail">
-    <div class="preview">123</div>
+    <div class="preview" v-html="detail"></div>
     <div class="ueditor">
       <VueUeditorWrap v-model="detail" :config="editorConfig" />
     </div>
@@ -24,9 +24,21 @@ export default {
         // 初始容器宽度
         initialFrameWidth: "100%",
         //
-        UEDITOR_HOME_URL: "/static/UEditor/"
+        UEDITOR_HOME_URL: "/public/UE/"
       }
     };
+  },
+  created() {
+    this.getConfig();
+  },
+  methods: {
+    getConfig() {
+      this.$http
+        .get("/index.php/admin/ContentEditor/index?action=config")
+        .then(res => {
+          this.editorConfig = res;
+        });
+    }
   }
 };
 </script>

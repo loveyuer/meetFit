@@ -10,7 +10,7 @@
       <el-table-column label="录入时间" prop="time_h"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="text" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="text" @click="del(scope.row.bind_id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +65,29 @@ export default {
     handleSizeChange(v) {
       this.size = v;
       this.getData();
-    }
+    },
+    // 删除业绩
+    del(id) {
+      this.$confirm("确认删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http
+            .get(`/index.php/admin/achievement/achievementDel?bind_id=${id}`)
+            .then(res => {
+              this.$message(res.msg);
+              this.getData();
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
   }
 };
 </script>

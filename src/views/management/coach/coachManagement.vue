@@ -49,13 +49,13 @@
       <el-table-column label="教练" prop="name"></el-table-column>
       <el-table-column label="联系方式" prop="mobile"></el-table-column>
       <el-table-column label="注册日期" prop="time_h"></el-table-column>
-      <el-table-column label="操作" width="150px">
+      <el-table-column label="操作" width="200px">
         <template slot-scope="scope">
           <el-button @click="update(scope.row)" type="text">修改</el-button>
           <el-button @click="del(scope.row)" type="text">删除</el-button>
-          <!-- <el-button @click="addDetail" size="mini" type="primary"
+          <el-button @click="addDetail" size="mini" type="text"
             >资质录入</el-button
-          > -->
+          >
         </template>
       </el-table-column>
     </el-table>

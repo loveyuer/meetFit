@@ -10,13 +10,13 @@
       background-color="#323844"
       text-color="#c2c2c2"
     >
-      <div v-if="!admin">
+      <div>
         <el-menu-item v-for="item in nav" :key="item.router" :index="item.router">
           <i :class="item.icon"></i>
           {{ item.name }}
         </el-menu-item>
       </div>
-      <div v-else>
+      <div v-if="admin">
         <el-menu-item v-for="item in adminNav" :key="item.router" :index="item.router">
           <i :class="item.icon"></i>
           {{ item.name }}
@@ -34,7 +34,7 @@ export default {
           id: "123",
           name: "管理平台",
           router: "/home/messageManage",
-          icon: "el-icon-chat-line-round"
+          icon: "el-icon-s-tools"
         }
       ],
       nav: [
